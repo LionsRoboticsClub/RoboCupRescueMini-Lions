@@ -11,53 +11,53 @@ try:
         data = ser.read()
 
         if(data == "1"): #muñeca giro der
-            control.write("")
+            control.write("l")
         elif(data == "2"): #muñeca giro izq
-            control.write("")
+            control.write("j")
         elif(data == "3"): #muñeca abajo
-            control.write("")
+            control.write("i")
         elif(data == "4"): #muñeca arriba
-            control.write("")
+            control.write("k")
         elif (data == "5"):
-            control.write("")
+            control.write("p")
         elif (data == "6"):
-            control.write("")
+            control.write("o")
         elif (data == "7"):
-            control.write("")
+            control.write("u")
         elif (data == "8"):
-            control.write("")
+            control.write("y")
         elif (data == "9"):
-            control.write("")
+            control.write("m")
         elif (data == "-"):
-            control.write("")
+            control.write("n")
         elif (data == "."):
-            control.write("")
+            control.write("z")
         elif (data == "_"):
-            control.write("")
-        elif (data == ","):
-            control.write("")
-        elif (data == "*"):
-            control.write("")
-        elif (data == "/"):
-            control.write("")
-        elif (data == ";"):
-            control.write("")
-        elif (data == "a"):
             control.write("w")
-        elif (data == "b"):
+        elif (data == ","):
             control.write("s")
+        elif (data == "*"):
+            control.write("a")
+        elif (data == "/"):
+            control.write("d")
+        elif (data == ";"):
+            control.write("w")
+        elif (data == "a"):
+            control.write("s")
+        elif (data == "b"):
+            control.write("a")
         elif (data == "c"):
             control.write("d")
         elif (data == "d"):
-            control.write("a")
-        elif (data == "%"):
-            control.write("")
-        elif (data == "&"):
-            control.write("")
-        elif (data == ">"):
             control.write("e")
-        elif (data == "<"):
+        elif (data == "%"):
             control.write("r")
+        elif (data == "&"):
+            control.write("t")
+        elif (data == ">"):
+            control.write("x")
+        elif (data == "<"):
+            control.write("f")
         elif (data == "n"):
             control.write("")
         elif (data == "C"):

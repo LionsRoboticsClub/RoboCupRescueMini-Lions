@@ -71,7 +71,7 @@ void setup(){
   Dxl.jointMode(M4);
   Dxl.maxTorque(M5, 1023);
   Dxl.jointMode(M5);
-  Dxl.maxTorque(M6, 1023);
+  //Dxl.maxTorque(M6, 1023);
   Dxl.wheelMode(M6);
   Dxl.maxTorque(M7, 1023);
   Dxl.wheelMode(M7);
@@ -91,7 +91,7 @@ void setup(){
   Dxl.jointMode(M17);
 }
 
-void loop(){
+  void loop(){
   if (SerialUSB.available()){
     char c = SerialUSB.read(); 
     if (c == 'l'){ 
@@ -116,28 +116,32 @@ void loop(){
       m2Angle-=deltaAngle;
       if(m2Angle<=0) 
         m2Angle=0;
-      Dxl.goalPosition(M2, m2Angle);
+      Dxl.setPosition(M2, m2Angle, 100); 
+      //Dxl.goalPosition(M2, m2Angle);
       delay(2);
     }else if (c == 'k'){ 
       SerialUSB.println("m2 atras");
       m2Angle+=deltaAngle;
       if(m2Angle>=1000) 
         m2Angle = 1000;
-      Dxl.goalPosition(M2, m2Angle);
+      Dxl.setPosition(M2, m2Angle, 100); 
+      //Dxl.goalPosition(M2, m2Angle);
       delay(2);
     }else if (c == 'p'){
       SerialUSB.println("garra abre");  
       m5Angle-=deltaAngle;     
       if(m5Angle<=400) 
-        m5Angle=400;       
-      Dxl.goalPosition(M5, m5Angle);
+        m5Angle=400;
+      Dxl.setPosition(M5, m5Angle, 100);       
+      //Dxl.goalPosition(M5, m5Angle);
       delay(2); 
     }else if (c == 'o'){
       SerialUSB.println("garra cierra");
       m5Angle+=deltaAngle; 
       if(m5Angle>=1000) 
         m5Angle = 1000;
-      Dxl.goalPosition(M5, m5Angle);
+      Dxl.setPosition(M5, m5Angle, 100); 
+      //Dxl.goalPosition(M5, m5Angle);
       delay(2);
     }else if (c == 'u'){
       SerialUSB.println("garra Derecha");
@@ -205,7 +209,19 @@ void loop(){
       m3Angle = 800;
       m4Angle = 950;
     }
-    if (c == 'w' && actualState != 'x'){ 
+    if (c == 'w'){ 
+
+      if(actualState == 'x'){
+      actualState = 't';
+      SerialUSB.println("llantas adelante");
+      Dxl.goalPosition(M12, 512);
+      Dxl.goalPosition(M13, 512);
+      Dxl.goalPosition(M14, 512);
+      Dxl.goalPosition(M15, 512);
+      Dxl.goalPosition(M16, 512);
+      Dxl.goalPosition(M17, 512);
+      }
+
       SerialUSB.println("adelante");
       Dxl.cwTurn(M6, Vel);
       Dxl.cwTurn(M7, Vel);
@@ -221,8 +237,23 @@ void loop(){
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
     }
-    if (c == 's' && actualState != 'x'){ 
+
+    if (c == 's'){ 
+      if(actualState == 'x'){
+
+      actualState = 't';
+      SerialUSB.println("llantas adelante");
+      Dxl.goalPosition(M12, 512);
+      Dxl.goalPosition(M13, 512);
+      Dxl.goalPosition(M14, 512);
+      Dxl.goalPosition(M15, 512);
+      Dxl.goalPosition(M16, 512);
+      Dxl.goalPosition(M17, 512);
+
+      }
+
       SerialUSB.println("atras");
+
       Dxl.ccwTurn(M6, Vel);
       Dxl.ccwTurn(M7, Vel);
       Dxl.ccwTurn(M8, Vel);
@@ -236,8 +267,18 @@ void loop(){
       Dxl.goalSpeed(M9, 0);
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
-    }else if (c == 'a' && actualState == 'x'){
+    }else if (c == 'a' && actualState != 'f'){
       SerialUSB.println("izquierda");
+
+      actualState = 'x';
+      SerialUSB.println("llantas circulo");
+      Dxl.goalPosition(M12, 200);
+      Dxl.goalPosition(M13, 200);
+      Dxl.goalPosition(M14, 200);
+      Dxl.goalPosition(M15, 200);
+      Dxl.goalPosition(M16, 200);
+      Dxl.goalPosition(M17, 200);
+
       Dxl.cwTurn(M6, Vel);
       Dxl.cwTurn(M7, Vel);
       Dxl.cwTurn(M8, Vel);
@@ -251,8 +292,18 @@ void loop(){
       Dxl.goalSpeed(M9, 0);
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
-    }else if (c == 'd' && actualState == 'x'){
-      SerialUSB.println("derecha");                   
+    }else if (c == 'd' && actualState != 'f'){
+      SerialUSB.println("derecha");   
+
+      actualState = 'x';
+      SerialUSB.println("llantas circulo");
+      Dxl.goalPosition(M12, 200);
+      Dxl.goalPosition(M13, 200);
+      Dxl.goalPosition(M14, 200);
+      Dxl.goalPosition(M15, 200);
+      Dxl.goalPosition(M16, 200);
+      Dxl.goalPosition(M17, 200);
+
       Dxl.ccwTurn(M6, Vel);
       Dxl.ccwTurn(M7, Vel);
       Dxl.ccwTurn(M8, Vel);
@@ -280,4 +331,4 @@ void loop(){
          Vel -= 300;
     }
   }
-}/////
+}

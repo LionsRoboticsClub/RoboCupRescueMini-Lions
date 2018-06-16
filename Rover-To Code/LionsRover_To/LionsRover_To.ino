@@ -162,7 +162,7 @@ void loop(){
       Dxl.goalPosition(M15, 512);
       Dxl.goalPosition(M16, 512);
       Dxl.goalPosition(M17, 512);
-    }else if(c=='x'){
+    }else if(c=='f'){
       actualState = c;
       SerialUSB.println("llantas circulo");
       Dxl.goalPosition(M12, 200);
@@ -171,7 +171,7 @@ void loop(){
       Dxl.goalPosition(M15, 200);
       Dxl.goalPosition(M16, 200);
       Dxl.goalPosition(M17, 200);
-    }else if(c=='f'){
+    }else if(c=='x'){
       actualState = c;
       SerialUSB.println("llantas de lado");
       Dxl.goalPosition(M12, 300);
@@ -236,7 +236,7 @@ void loop(){
       Dxl.goalSpeed(M9, 0);
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
-    }else if (c == 'a' && actualState != 't' && actualState != 'f'){
+    }else if (c == 'a' && actualState == 'x'){
       SerialUSB.println("izquierda");
       Dxl.cwTurn(M6, Vel);
       Dxl.cwTurn(M7, Vel);
@@ -251,7 +251,7 @@ void loop(){
       Dxl.goalSpeed(M9, 0);
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
-    }else if (c == 'd' && actualState != 't' && actualState != 'f'){
+    }else if (c == 'd' && actualState == 'x'){
       SerialUSB.println("derecha");                   
       Dxl.ccwTurn(M6, Vel);
       Dxl.ccwTurn(M7, Vel);

@@ -56,13 +56,19 @@ Dynamixel Dxl (DXL_BUS_SERIAL1);
   const int midSpeed = 600;
   const int lowSpeed = 300; 
   int directionAngle = 512;
-  
+  int loadM5;
   char actualState = 't'; 
+  int rele = 21;  
+  int releState = 1;
 
 //SETUP
+
+//define object 2d package
 void setup(){
   SerialUSB.begin(); 
   Dxl.begin(3);
+  pinMode(rele, OUTPUT);
+  digitalWrite(rele, HIGH);
   Dxl.jointMode(M1);
   Dxl.maxTorque(M2, 1023);
   Dxl.jointMode(M2);
@@ -132,7 +138,13 @@ void setup(){
       m5Angle-=deltaAngle;     
       if(m5Angle<=400) 
         m5Angle=400;
-      Dxl.setPosition(M5, m5Angle, 100);       
+      loadM5 = Dxl.getLoad(M5);
+      loadM5%=1024;
+      loadM5 = loadM5*100/1024; //porcentaje
+      
+      if(loadM5<70){
+      Dxl.setPosition(M5, m5Angle, 100);      
+      } 
       //Dxl.goalPosition(M5, m5Angle);
       delay(2); 
     }else if (c == 'o'){
@@ -140,7 +152,13 @@ void setup(){
       m5Angle+=deltaAngle; 
       if(m5Angle>=1000) 
         m5Angle = 1000;
-      Dxl.setPosition(M5, m5Angle, 100); 
+      loadM5 = Dxl.getLoad(M5);
+      loadM5%=1024;
+      loadM5 = loadM5*100/1024; //porcentaje
+      
+      if(loadM5<70){
+      Dxl.setPosition(M5, m5Angle, 100);      
+      } 
       //Dxl.goalPosition(M5, m5Angle);
       delay(2);
     }else if (c == 'u'){
@@ -202,26 +220,20 @@ void setup(){
       SerialUSB.println("pos inicial");
       Dxl.setPosition(M1,512,100);
       Dxl.setPosition(M2,350,100);
-      Dxl.setPosition(M3,800,100);
+      Dxl.setPosition(M3,512,100);
       Dxl.setPosition(M4,950,100);
       m1Angle = 512; 
       m2Angle = 350; 
       m3Angle = 800;
       m4Angle = 950;
     }
-    if (c == 'w'){ 
-
-      if(actualState == 'x'){
-      actualState = 't';
-      SerialUSB.println("llantas adelante");
-      Dxl.goalPosition(M12, 512);
-      Dxl.goalPosition(M13, 512);
-      Dxl.goalPosition(M14, 512);
-      Dxl.goalPosition(M15, 512);
-      Dxl.goalPosition(M16, 512);
-      Dxl.goalPosition(M17, 512);
-      }
-
+    if(c=='N'){
+      digitalWrite(21, LOW);
+      delay(200);
+      digitalWrite(21, HIGH);
+      delay(200);
+    }
+    if (c == 'w' && actualState != 'x'){ 
       SerialUSB.println("adelante");
       Dxl.cwTurn(M6, Vel);
       Dxl.cwTurn(M7, Vel);
@@ -237,23 +249,8 @@ void setup(){
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
     }
-
-    if (c == 's'){ 
-      if(actualState == 'x'){
-
-      actualState = 't';
-      SerialUSB.println("llantas adelante");
-      Dxl.goalPosition(M12, 512);
-      Dxl.goalPosition(M13, 512);
-      Dxl.goalPosition(M14, 512);
-      Dxl.goalPosition(M15, 512);
-      Dxl.goalPosition(M16, 512);
-      Dxl.goalPosition(M17, 512);
-
-      }
-
+    if (c == 's' && actualState != 'x'){ 
       SerialUSB.println("atras");
-
       Dxl.ccwTurn(M6, Vel);
       Dxl.ccwTurn(M7, Vel);
       Dxl.ccwTurn(M8, Vel);
@@ -267,18 +264,8 @@ void setup(){
       Dxl.goalSpeed(M9, 0);
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
-    }else if (c == 'a' && actualState != 'f'){
+    }else if (c == 'a' && actualState == 'x'){
       SerialUSB.println("izquierda");
-
-      actualState = 'x';
-      SerialUSB.println("llantas circulo");
-      Dxl.goalPosition(M12, 200);
-      Dxl.goalPosition(M13, 200);
-      Dxl.goalPosition(M14, 200);
-      Dxl.goalPosition(M15, 200);
-      Dxl.goalPosition(M16, 200);
-      Dxl.goalPosition(M17, 200);
-
       Dxl.cwTurn(M6, Vel);
       Dxl.cwTurn(M7, Vel);
       Dxl.cwTurn(M8, Vel);
@@ -292,18 +279,8 @@ void setup(){
       Dxl.goalSpeed(M9, 0);
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
-    }else if (c == 'd' && actualState != 'f'){
-      SerialUSB.println("derecha");   
-
-      actualState = 'x';
-      SerialUSB.println("llantas circulo");
-      Dxl.goalPosition(M12, 200);
-      Dxl.goalPosition(M13, 200);
-      Dxl.goalPosition(M14, 200);
-      Dxl.goalPosition(M15, 200);
-      Dxl.goalPosition(M16, 200);
-      Dxl.goalPosition(M17, 200);
-
+    }else if (c == 'd' && actualState == 'x'){
+      SerialUSB.println("derecha");                   
       Dxl.ccwTurn(M6, Vel);
       Dxl.ccwTurn(M7, Vel);
       Dxl.ccwTurn(M8, Vel);

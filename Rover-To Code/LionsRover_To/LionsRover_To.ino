@@ -68,7 +68,6 @@ void setup(){
   SerialUSB.begin(); 
   Dxl.begin(3);
   pinMode(rele, OUTPUT);
-  digitalWrite(rele, HIGH);
   Dxl.jointMode(M1);
   Dxl.maxTorque(M2, 1023);
   Dxl.jointMode(M2);
@@ -141,25 +140,16 @@ void setup(){
       loadM5 = Dxl.getLoad(M5);
       loadM5%=1024;
       loadM5 = loadM5*100/1024; //porcentaje
-      
-      if(loadM5<70){
-      Dxl.setPosition(M5, m5Angle, 100);      
-      } 
-      //Dxl.goalPosition(M5, m5Angle);
+
+       Dxl.goalPosition(M5, m5Angle);
       delay(2); 
     }else if (c == 'o'){
       SerialUSB.println("garra cierra");
       m5Angle+=deltaAngle; 
       if(m5Angle>=1000) 
         m5Angle = 1000;
-      loadM5 = Dxl.getLoad(M5);
-      loadM5%=1024;
-      loadM5 = loadM5*100/1024; //porcentaje
-      
-      if(loadM5<70){
-      Dxl.setPosition(M5, m5Angle, 100);      
-      } 
-      //Dxl.goalPosition(M5, m5Angle);
+
+      Dxl.goalPosition(M5, m5Angle);
       delay(2);
     }else if (c == 'u'){
       SerialUSB.println("garra Derecha");
@@ -202,6 +192,13 @@ void setup(){
       Dxl.goalPosition(M15, 700);
       Dxl.goalPosition(M16, 512);
       Dxl.goalPosition(M17, 300);
+    }else if(c == 'J'){
+      Dxl.goalPosition(M12, 400);
+      Dxl.goalPosition(M13, 400);
+      Dxl.goalPosition(M14, 400);
+      Dxl.goalPosition(M15, 600);
+      Dxl.goalPosition(M16, 600);
+      Dxl.goalPosition(M17, 600);
     }else if (c == 'm'){
       SerialUSB.println("m4 adelante");
       m4Angle-=deltaAngle;
@@ -220,12 +217,23 @@ void setup(){
       SerialUSB.println("pos inicial");
       Dxl.setPosition(M1,512,100);
       Dxl.setPosition(M2,350,100);
-      Dxl.setPosition(M3,512,100);
+      Dxl.setPosition(M3,400,100);
       Dxl.setPosition(M4,950,100);
       m1Angle = 512; 
       m2Angle = 350; 
-      m3Angle = 800;
+      m3Angle = 400;
       m4Angle = 950;
+    }
+    if(c=='I'){
+      SerialUSB.println("Dexterity");
+      Dxl.setPosition(M1,512,100);
+      Dxl.setPosition(M2,600,100);
+      Dxl.setPosition(M3,200,100);
+      Dxl.setPosition(M4,350,100);
+      m1Angle = 512; 
+      m2Angle = 600; 
+      m3Angle = 200;
+      m4Angle = 350;
     }
     if(c=='N'){
       digitalWrite(21, LOW);
@@ -233,7 +241,7 @@ void setup(){
       digitalWrite(21, HIGH);
       delay(200);
     }
-    if (c == 'w' && actualState != 'x'){ 
+    if (c == 'w' && actualState != 'x'||actualState == 'J'){ 
       SerialUSB.println("adelante");
       Dxl.cwTurn(M6, Vel);
       Dxl.cwTurn(M7, Vel);
@@ -249,7 +257,7 @@ void setup(){
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
     }
-    if (c == 's' && actualState != 'x'){ 
+    if (c == 's' && actualState != 'x' || actualState == 'J'){ 
       SerialUSB.println("atras");
       Dxl.ccwTurn(M6, Vel);
       Dxl.ccwTurn(M7, Vel);
@@ -264,7 +272,7 @@ void setup(){
       Dxl.goalSpeed(M9, 0);
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
-    }else if (c == 'a' && actualState == 'x'){
+    }else if (c == 'a' && actualState == 'x' && actualState != 'J'){
       SerialUSB.println("izquierda");
       Dxl.cwTurn(M6, Vel);
       Dxl.cwTurn(M7, Vel);
@@ -279,8 +287,8 @@ void setup(){
       Dxl.goalSpeed(M9, 0);
       Dxl.goalSpeed(M10, 0);
       Dxl.goalSpeed(M11, 0);
-    }else if (c == 'd' && actualState == 'x'){
-      SerialUSB.println("derecha");                   
+    }else if (c == 'd' && actualState == 'x' && actualState != 'J'){
+      SerialUSB.println("derecha");                  
       Dxl.ccwTurn(M6, Vel);
       Dxl.ccwTurn(M7, Vel);
       Dxl.ccwTurn(M8, Vel);
